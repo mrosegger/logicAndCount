@@ -1,0 +1,232 @@
+
+LogicAndCount.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000001c8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000154  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000002  00800100  00800100  000001c8  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000001c8  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001f8  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000028  00000000  00000000  00000238  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   0000072f  00000000  00000000  00000260  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000064f  00000000  00000000  0000098f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000226  00000000  00000000  00000fde  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000048  00000000  00000000  00001204  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003d1  00000000  00000000  0000124c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000180  00000000  00000000  0000161d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  0000179d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   8:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  10:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  14:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  18:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  1c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  24:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  2c:	0c 94 84 00 	jmp	0x108	; 0x108 <__vector_11>
+  30:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  34:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  38:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  54:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  58:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  5c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  60:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  64:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+
+00000074 <__do_clear_bss>:
+  74:	21 e0       	ldi	r18, 0x01	; 1
+  76:	a0 e0       	ldi	r26, 0x00	; 0
+  78:	b1 e0       	ldi	r27, 0x01	; 1
+  7a:	01 c0       	rjmp	.+2      	; 0x7e <.do_clear_bss_start>
+
+0000007c <.do_clear_bss_loop>:
+  7c:	1d 92       	st	X+, r1
+
+0000007e <.do_clear_bss_start>:
+  7e:	a2 30       	cpi	r26, 0x02	; 2
+  80:	b2 07       	cpc	r27, r18
+  82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
+  84:	0e 94 48 00 	call	0x90	; 0x90 <main>
+  88:	0c 94 a8 00 	jmp	0x150	; 0x150 <_exit>
+
+0000008c <__bad_interrupt>:
+  8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000090 <main>:
+
+
+int main(void)
+{
+    //  Config Timer:
+    TCCR1A = 0;// set entire TCCR1A register to 0
+  90:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7e0080>
+    TCCR1B = 0;// same for TCCR1B
+  94:	e1 e8       	ldi	r30, 0x81	; 129
+  96:	f0 e0       	ldi	r31, 0x00	; 0
+  98:	10 82       	st	Z, r1
+    TCNT1  = 0;//initialize counter value to 0
+  9a:	10 92 85 00 	sts	0x0085, r1	; 0x800085 <__TEXT_REGION_LENGTH__+0x7e0085>
+  9e:	10 92 84 00 	sts	0x0084, r1	; 0x800084 <__TEXT_REGION_LENGTH__+0x7e0084>
+    // set compare match register for 1hz increments
+    OCR1A = 15624;// = (16*10^6) / (1*1024) - 1 (must be <65536) 1 sec = 15624; 0,5s = 7812
+  a2:	88 e0       	ldi	r24, 0x08	; 8
+  a4:	9d e3       	ldi	r25, 0x3D	; 61
+  a6:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
+  aa:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
+    // turn on CTC mode
+    TCCR1B |= (1 << WGM12);
+  ae:	80 81       	ld	r24, Z
+  b0:	88 60       	ori	r24, 0x08	; 8
+  b2:	80 83       	st	Z, r24
+    // Set CS10 and CS12 bits for 1024 prescaler
+    TCCR1B |= (1 << CS12) | (1 << CS10);
+  b4:	80 81       	ld	r24, Z
+  b6:	85 60       	ori	r24, 0x05	; 5
+  b8:	80 83       	st	Z, r24
+    // enable timer compare interrupt
+    TIMSK1 |= (1 << OCIE1A);
+  ba:	ef e6       	ldi	r30, 0x6F	; 111
+  bc:	f0 e0       	ldi	r31, 0x00	; 0
+  be:	80 81       	ld	r24, Z
+  c0:	82 60       	ori	r24, 0x02	; 2
+  c2:	80 83       	st	Z, r24
+	
+	sei();
+  c4:	78 94       	sei
+	unsigned const char BUTTON_MASK =	(1<<PINC0)|(1<<PIND1)|(1<<PIND2);
+	
+	/* Replace with your application code */
+    while (1) 
+    {
+		PORTD = (0<<PIND5)|(0<<PIND6)|(0<<PIND7);
+  c6:	1b b8       	out	0x0b, r1	; 11
+		unsigned char pins = PINC & BUTTON_MASK;
+  c8:	86 b1       	in	r24, 0x06	; 6
+  ca:	87 70       	andi	r24, 0x07	; 7
+		pins =~ pins;
+  cc:	80 95       	com	r24
+		pins = (BUTTON_MASK&pins);
+		
+		unsigned char bt0 = (pins&(1<<PINC0))>>PINC0;
+  ce:	98 2f       	mov	r25, r24
+  d0:	91 70       	andi	r25, 0x01	; 1
+		unsigned char bt1 = (pins&(1<<PINC1))>>PINC1;
+  d2:	81 fb       	bst	r24, 1
+  d4:	44 27       	eor	r20, r20
+  d6:	40 f9       	bld	r20, 0
+		unsigned char bt2 = (pins&(1<<PINC2))>>PINC2;
+  d8:	82 fb       	bst	r24, 2
+  da:	88 27       	eor	r24, r24
+  dc:	80 f9       	bld	r24, 0
+		
+		unsigned char logicOr = bt0|bt1|bt2;
+  de:	39 2f       	mov	r19, r25
+  e0:	34 2b       	or	r19, r20
+		unsigned char logicAnd = bt0&bt1&bt2;
+		unsigned char logicXor = (bt0&~bt1&~bt2) | (~bt0&bt1&~bt2) | (~bt0&~bt1&bt2);
+  e2:	29 2f       	mov	r18, r25
+  e4:	24 27       	eor	r18, r20
+		
+		unsigned char logiMask = logicOr<<0 | logicAnd<<1 | logicXor<<2;	
+		PORTD |= logiMask;	
+  e6:	5b b1       	in	r21, 0x0b	; 11
+  e8:	48 23       	and	r20, r24
+  ea:	94 23       	and	r25, r20
+  ec:	99 0f       	add	r25, r25
+  ee:	43 2f       	mov	r20, r19
+  f0:	48 2b       	or	r20, r24
+  f2:	94 2b       	or	r25, r20
+  f4:	30 95       	com	r19
+  f6:	32 27       	eor	r19, r18
+  f8:	83 23       	and	r24, r19
+  fa:	82 27       	eor	r24, r18
+  fc:	88 0f       	add	r24, r24
+  fe:	88 0f       	add	r24, r24
+ 100:	89 2b       	or	r24, r25
+ 102:	85 2b       	or	r24, r21
+ 104:	8b b9       	out	0x0b, r24	; 11
+ 106:	df cf       	rjmp	.-66     	; 0xc6 <main+0x36>
+
+00000108 <__vector_11>:
+		
+    }	
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+ 108:	1f 92       	push	r1
+ 10a:	0f 92       	push	r0
+ 10c:	0f b6       	in	r0, 0x3f	; 63
+ 10e:	0f 92       	push	r0
+ 110:	11 24       	eor	r1, r1
+ 112:	8f 93       	push	r24
+ 114:	9f 93       	push	r25
+	counter++;
+ 116:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+ 11a:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+ 11e:	01 96       	adiw	r24, 0x01	; 1
+ 120:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
+ 124:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+	PORTD = counter<<2;
+ 128:	88 0f       	add	r24, r24
+ 12a:	88 0f       	add	r24, r24
+ 12c:	8b b9       	out	0x0b, r24	; 11
+	if (counter == 7)
+ 12e:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+ 132:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+ 136:	07 97       	sbiw	r24, 0x07	; 7
+ 138:	21 f4       	brne	.+8      	; 0x142 <__vector_11+0x3a>
+	{
+		counter = 0;
+ 13a:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <_edata+0x1>
+ 13e:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <_edata>
+	}
+}
+ 142:	9f 91       	pop	r25
+ 144:	8f 91       	pop	r24
+ 146:	0f 90       	pop	r0
+ 148:	0f be       	out	0x3f, r0	; 63
+ 14a:	0f 90       	pop	r0
+ 14c:	1f 90       	pop	r1
+ 14e:	18 95       	reti
+
+00000150 <_exit>:
+ 150:	f8 94       	cli
+
+00000152 <__stop_program>:
+ 152:	ff cf       	rjmp	.-2      	; 0x152 <__stop_program>
