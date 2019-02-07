@@ -27,7 +27,7 @@ int main(void)
 	
 	sei();
 	
-	unsigned const char BUTTON_MASK =	(1<<PINC0)|(1<<PIND1)|(1<<PIND2);
+	DDRD = 255;
 	
 	/* Replace with your application code */
     while (1) 
@@ -56,12 +56,12 @@ int main(void)
 		unsigned char logicXor = (bt2^bt0^bt1);
 		
 		//Logic Output
-		PORTD = (logicOr<<PIND5);
-		PORTD |= (logicAnd<<PIND6);
-		PORTD |= (logicXor<<PIND7);
+		PORTD = (logicOr<<PORTD5);
+		PORTD |= (logicAnd<<PORTD6);
+		PORTD |= (logicXor<<PORTD7);
     }	
 }
-
+	
 //Timer Interrupt 
 ISR(TIMER1_COMPA_vect)
 {
