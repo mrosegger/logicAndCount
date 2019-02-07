@@ -32,42 +32,43 @@ int main(void)
 	/* Replace with your application code */
     while (1) 
     {
-		unsigned char pins = PINC & BUTTON_MASK;
-		pins =~ pins;
-		pins = (BUTTON_MASK&pins);
-		int bt0 = 0;
-		int bt1 = 0;
-		int bt2 = 0;
+		int bt0 = 1;
+		int bt1 = 1;
+		int bt2 = 1;
 		
+		//Read in input
 		if (PINC &= (1<<PINC0))
 		{
-			bt0 = 1;
+			bt0 = 0;
 		}
 		if (PINC &= (1<<PINC1))
 		{
-			bt1 = 1;
+			bt1 = 0;
 		}
-		if (PINC &= (1<<PINC1))
+		if (PINC &= (1<<PINC2))
 		{
-			bt2 = 1;
+			bt2 = 0;
 		}
 		
+		//Logic
 		unsigned char logicOr = bt0|bt1|bt2;
 		unsigned char logicAnd = bt0&bt1&bt2;
-		unsigned char logicXor = (bt0&~bt1&~bt2) | (~bt0&bt1&~bt2) | (~bt0&~bt1&bt2);
+		unsigned char logicXor = (bt2^bt0^bt1);
 		
-		PORTD |= (logicOr<<PIND5);
+		//Logic Output
+		PORTD = (logicOr<<PIND5);
 		PORTD |= (logicAnd<<PIND6);
 		PORTD |= (logicXor<<PIND7);
-		
     }	
 }
 
+//Timer Interrupt 
 ISR(TIMER1_COMPA_vect)
 {
-	counter++;
+	//Counter Output
 	PORTD = counter<<2;
-	if (counter == 7)
+	//Counter Reset
+	if (counter++ == 7)
 	{
 		counter = 0;
 	}
