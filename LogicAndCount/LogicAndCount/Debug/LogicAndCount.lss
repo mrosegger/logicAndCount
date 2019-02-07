@@ -3,31 +3,31 @@ LogicAndCount.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000001c8  2**0
+  0 .data         00000000  00800100  00800100  000001f6  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000154  00000000  00000000  00000074  2**1
+  1 .text         00000182  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000002  00800100  00800100  000001c8  2**0
+  2 .bss          00000002  00800100  00800100  000001f6  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000001c8  2**0
+  3 .comment      00000030  00000000  00000000  000001f6  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001f8  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000228  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000028  00000000  00000000  00000238  2**0
+  5 .debug_aranges 00000028  00000000  00000000  00000268  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000072f  00000000  00000000  00000260  2**0
+  6 .debug_info   0000071c  00000000  00000000  00000290  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000064f  00000000  00000000  0000098f  2**0
+  7 .debug_abbrev 0000065c  00000000  00000000  000009ac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000226  00000000  00000000  00000fde  2**0
+  8 .debug_line   00000203  00000000  00000000  00001008  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000048  00000000  00000000  00001204  2**2
+  9 .debug_frame  00000048  00000000  00000000  0000120c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003d1  00000000  00000000  0000124c  2**0
+ 10 .debug_str    000003c1  00000000  00000000  00001254  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000180  00000000  00000000  0000161d  2**0
+ 11 .debug_loc    00000154  00000000  00000000  00001615  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000018  00000000  00000000  0000179d  2**0
+ 12 .debug_ranges 00000018  00000000  00000000  00001769  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -44,7 +44,7 @@ Disassembly of section .text:
   20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   24:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  2c:	0c 94 84 00 	jmp	0x108	; 0x108 <__vector_11>
+  2c:	0c 94 9b 00 	jmp	0x136	; 0x136 <__vector_11>
   30:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   34:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   38:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -82,7 +82,7 @@ Disassembly of section .text:
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
   84:	0e 94 48 00 	call	0x90	; 0x90 <main>
-  88:	0c 94 a8 00 	jmp	0x150	; 0x150 <_exit>
+  88:	0c 94 bf 00 	jmp	0x17e	; 0x17e <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -128,105 +128,144 @@ int main(void)
 	
 	sei();
   c4:	78 94       	sei
+		pins = (BUTTON_MASK&pins);
+		int bt0 = 0;
+		int bt1 = 0;
+		int bt2 = 0;
+		
+		if (PINC &= (1<<PINC0))
+  c6:	71 e0       	ldi	r23, 0x01	; 1
+  c8:	e0 e0       	ldi	r30, 0x00	; 0
 	unsigned const char BUTTON_MASK =	(1<<PINC0)|(1<<PIND1)|(1<<PIND2);
 	
 	/* Replace with your application code */
     while (1) 
     {
-		PORTD = (0<<PIND5)|(0<<PIND6)|(0<<PIND7);
-  c6:	1b b8       	out	0x0b, r1	; 11
 		unsigned char pins = PINC & BUTTON_MASK;
-  c8:	86 b1       	in	r24, 0x06	; 6
-  ca:	87 70       	andi	r24, 0x07	; 7
-		pins =~ pins;
-  cc:	80 95       	com	r24
+  ca:	86 b1       	in	r24, 0x06	; 6
 		pins = (BUTTON_MASK&pins);
+		int bt0 = 0;
+		int bt1 = 0;
+		int bt2 = 0;
 		
-		unsigned char bt0 = (pins&(1<<PINC0))>>PINC0;
-  ce:	98 2f       	mov	r25, r24
-  d0:	91 70       	andi	r25, 0x01	; 1
-		unsigned char bt1 = (pins&(1<<PINC1))>>PINC1;
-  d2:	81 fb       	bst	r24, 1
-  d4:	44 27       	eor	r20, r20
-  d6:	40 f9       	bld	r20, 0
-		unsigned char bt2 = (pins&(1<<PINC2))>>PINC2;
-  d8:	82 fb       	bst	r24, 2
-  da:	88 27       	eor	r24, r24
-  dc:	80 f9       	bld	r24, 0
+		if (PINC &= (1<<PINC0))
+  cc:	96 b1       	in	r25, 0x06	; 6
+  ce:	91 70       	andi	r25, 0x01	; 1
+  d0:	96 b9       	out	0x06, r25	; 6
+  d2:	87 2f       	mov	r24, r23
+  d4:	91 11       	cpse	r25, r1
+  d6:	01 c0       	rjmp	.+2      	; 0xda <main+0x4a>
+  d8:	8e 2f       	mov	r24, r30
+		{
+			bt0 = 1;
+		}
+		if (PINC &= (1<<PINC1))
+  da:	96 b1       	in	r25, 0x06	; 6
+  dc:	92 70       	andi	r25, 0x02	; 2
+  de:	96 b9       	out	0x06, r25	; 6
+  e0:	47 2f       	mov	r20, r23
+  e2:	91 11       	cpse	r25, r1
+  e4:	01 c0       	rjmp	.+2      	; 0xe8 <main+0x58>
+  e6:	4e 2f       	mov	r20, r30
+		{
+			bt1 = 1;
+		}
+		if (PINC &= (1<<PINC1))
+  e8:	96 b1       	in	r25, 0x06	; 6
+  ea:	92 70       	andi	r25, 0x02	; 2
+  ec:	96 b9       	out	0x06, r25	; 6
+  ee:	37 2f       	mov	r19, r23
+  f0:	91 11       	cpse	r25, r1
+  f2:	01 c0       	rjmp	.+2      	; 0xf6 <main+0x66>
+  f4:	3e 2f       	mov	r19, r30
+  f6:	24 2f       	mov	r18, r20
+  f8:	28 2b       	or	r18, r24
+			bt2 = 1;
+		}
 		
 		unsigned char logicOr = bt0|bt1|bt2;
-  de:	39 2f       	mov	r19, r25
-  e0:	34 2b       	or	r19, r20
 		unsigned char logicAnd = bt0&bt1&bt2;
 		unsigned char logicXor = (bt0&~bt1&~bt2) | (~bt0&bt1&~bt2) | (~bt0&~bt1&bt2);
-  e2:	29 2f       	mov	r18, r25
-  e4:	24 27       	eor	r18, r20
+  fa:	94 2f       	mov	r25, r20
+  fc:	98 27       	eor	r25, r24
 		
-		unsigned char logiMask = logicOr<<0 | logicAnd<<1 | logicXor<<2;	
-		PORTD |= logiMask;	
-  e6:	5b b1       	in	r21, 0x0b	; 11
-  e8:	48 23       	and	r20, r24
-  ea:	94 23       	and	r25, r20
-  ec:	99 0f       	add	r25, r25
-  ee:	43 2f       	mov	r20, r19
-  f0:	48 2b       	or	r20, r24
-  f2:	94 2b       	or	r25, r20
-  f4:	30 95       	com	r19
-  f6:	32 27       	eor	r19, r18
-  f8:	83 23       	and	r24, r19
-  fa:	82 27       	eor	r24, r18
-  fc:	88 0f       	add	r24, r24
-  fe:	88 0f       	add	r24, r24
- 100:	89 2b       	or	r24, r25
- 102:	85 2b       	or	r24, r21
- 104:	8b b9       	out	0x0b, r24	; 11
- 106:	df cf       	rjmp	.-66     	; 0xc6 <main+0x36>
+		PORTD |= (logicOr<<PIND5);
+  fe:	6b b1       	in	r22, 0x0b	; 11
+ 100:	52 2f       	mov	r21, r18
+ 102:	53 2b       	or	r21, r19
+ 104:	52 95       	swap	r21
+ 106:	55 0f       	add	r21, r21
+ 108:	50 7e       	andi	r21, 0xE0	; 224
+ 10a:	56 2b       	or	r21, r22
+ 10c:	5b b9       	out	0x0b, r21	; 11
+		PORTD |= (logicAnd<<PIND6);
+ 10e:	5b b1       	in	r21, 0x0b	; 11
+ 110:	84 23       	and	r24, r20
+ 112:	83 23       	and	r24, r19
+ 114:	82 95       	swap	r24
+ 116:	88 0f       	add	r24, r24
+ 118:	88 0f       	add	r24, r24
+ 11a:	80 7c       	andi	r24, 0xC0	; 192
+ 11c:	85 2b       	or	r24, r21
+ 11e:	8b b9       	out	0x0b, r24	; 11
+		PORTD |= (logicXor<<PIND7);
+ 120:	8b b1       	in	r24, 0x0b	; 11
+ 122:	20 95       	com	r18
+ 124:	29 27       	eor	r18, r25
+ 126:	23 23       	and	r18, r19
+ 128:	92 27       	eor	r25, r18
+ 12a:	97 95       	ror	r25
+ 12c:	99 27       	eor	r25, r25
+ 12e:	97 95       	ror	r25
+ 130:	98 2b       	or	r25, r24
+ 132:	9b b9       	out	0x0b, r25	; 11
+ 134:	ca cf       	rjmp	.-108    	; 0xca <main+0x3a>
 
-00000108 <__vector_11>:
+00000136 <__vector_11>:
 		
     }	
 }
 
 ISR(TIMER1_COMPA_vect)
 {
- 108:	1f 92       	push	r1
- 10a:	0f 92       	push	r0
- 10c:	0f b6       	in	r0, 0x3f	; 63
- 10e:	0f 92       	push	r0
- 110:	11 24       	eor	r1, r1
- 112:	8f 93       	push	r24
- 114:	9f 93       	push	r25
+ 136:	1f 92       	push	r1
+ 138:	0f 92       	push	r0
+ 13a:	0f b6       	in	r0, 0x3f	; 63
+ 13c:	0f 92       	push	r0
+ 13e:	11 24       	eor	r1, r1
+ 140:	8f 93       	push	r24
+ 142:	9f 93       	push	r25
 	counter++;
- 116:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
- 11a:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
- 11e:	01 96       	adiw	r24, 0x01	; 1
- 120:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
- 124:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+ 144:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+ 148:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+ 14c:	01 96       	adiw	r24, 0x01	; 1
+ 14e:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
+ 152:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
 	PORTD = counter<<2;
- 128:	88 0f       	add	r24, r24
- 12a:	88 0f       	add	r24, r24
- 12c:	8b b9       	out	0x0b, r24	; 11
+ 156:	88 0f       	add	r24, r24
+ 158:	88 0f       	add	r24, r24
+ 15a:	8b b9       	out	0x0b, r24	; 11
 	if (counter == 7)
- 12e:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
- 132:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
- 136:	07 97       	sbiw	r24, 0x07	; 7
- 138:	21 f4       	brne	.+8      	; 0x142 <__vector_11+0x3a>
+ 15c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+ 160:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+ 164:	07 97       	sbiw	r24, 0x07	; 7
+ 166:	21 f4       	brne	.+8      	; 0x170 <__vector_11+0x3a>
 	{
 		counter = 0;
- 13a:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <_edata+0x1>
- 13e:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <_edata>
+ 168:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <_edata+0x1>
+ 16c:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <_edata>
 	}
 }
- 142:	9f 91       	pop	r25
- 144:	8f 91       	pop	r24
- 146:	0f 90       	pop	r0
- 148:	0f be       	out	0x3f, r0	; 63
- 14a:	0f 90       	pop	r0
- 14c:	1f 90       	pop	r1
- 14e:	18 95       	reti
+ 170:	9f 91       	pop	r25
+ 172:	8f 91       	pop	r24
+ 174:	0f 90       	pop	r0
+ 176:	0f be       	out	0x3f, r0	; 63
+ 178:	0f 90       	pop	r0
+ 17a:	1f 90       	pop	r1
+ 17c:	18 95       	reti
 
-00000150 <_exit>:
- 150:	f8 94       	cli
+0000017e <_exit>:
+ 17e:	f8 94       	cli
 
-00000152 <__stop_program>:
- 152:	ff cf       	rjmp	.-2      	; 0x152 <__stop_program>
+00000180 <__stop_program>:
+ 180:	ff cf       	rjmp	.-2      	; 0x180 <__stop_program>

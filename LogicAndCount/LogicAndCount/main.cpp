@@ -32,14 +32,25 @@ int main(void)
 	/* Replace with your application code */
     while (1) 
     {
-		PORTD = (0<<PIND5)|(0<<PIND6)|(0<<PIND7);
 		unsigned char pins = PINC & BUTTON_MASK;
 		pins =~ pins;
 		pins = (BUTTON_MASK&pins);
+		int bt0 = 0;
+		int bt1 = 0;
+		int bt2 = 0;
 		
-		unsigned char bt0 = (pins&(1<<PINC0))>>PINC0;
-		unsigned char bt1 = (pins&(1<<PINC1))>>PINC1;
-		unsigned char bt2 = (pins&(1<<PINC2))>>PINC2;
+		if (PINC &= (1<<PINC0))
+		{
+			bt0 = 1;
+		}
+		if (PINC &= (1<<PINC1))
+		{
+			bt1 = 1;
+		}
+		if (PINC &= (1<<PINC1))
+		{
+			bt2 = 1;
+		}
 		
 		unsigned char logicOr = bt0|bt1|bt2;
 		unsigned char logicAnd = bt0&bt1&bt2;
