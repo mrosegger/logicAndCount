@@ -5,9 +5,11 @@
  * Author : mrosegger
  */ 
 
+#define F_CPU 16000000UL
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
-int counter;
+volatile int counter;
 
 
 int main(void)
@@ -32,6 +34,7 @@ int main(void)
 	/* Replace with your application code */
     while (1) 
     {
+		//continue;
 		int bt0 = 1;
 		int bt1 = 1;
 		int bt2 = 1;
@@ -56,9 +59,11 @@ int main(void)
 		unsigned char logicXor = (bt2^bt0^bt1);
 		
 		//Logic Output
-		PORTD = (logicOr<<PORTD5);
+		PORTD &= ((1<<PORTD2) |(1<<PORTD3) |(1<<PORTD4));
+		PORTD |= (logicOr<<PORTD5);
 		PORTD |= (logicAnd<<PORTD6);
 		PORTD |= (logicXor<<PORTD7);
+		
     }	
 }
 	
@@ -66,7 +71,8 @@ int main(void)
 ISR(TIMER1_COMPA_vect)
 {
 	//Counter Output
-	PORTD = counter<<2;
+	PORTD &= ((1 << PORTD5) | (1 << PORTD6) | (1 << PORTD7));
+	PORTD |= counter<<2;
 	//Counter Reset
 	if (counter++ == 7)
 	{
